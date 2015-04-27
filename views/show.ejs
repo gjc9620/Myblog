@@ -1,0 +1,324 @@
+﻿<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!DOCTYPE html>
+<html>
+<head>
+    <title>所有微博</title>
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <script src="/javascripts/underscore-min.js"></script>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/jquery.pin.js"></script>
+    <script src="/javascripts/moment.min.js"></script>
+    <script src="/javascripts/backbone.js"></script>
+    <link rel="stylesheet" href="/stylesheets/show.css">
+    
+</head>
+<body>
+<script>
+
+
+</script>
+<div id="zuida"  align="center">
+    <div id="zhongjian" align="left">
+
+
+        <!--导航条-->
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/show" >MYBLOG</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">所有微博</a></li>
+                    <li><a href="/new">写微博</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            用户 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/logout" id="dengchu">登出</a></li>
+                            <li><a href="/register">注册</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--/导航条-->
+
+        <!--正文-->
+        <div id="zhengwen"  align="left">
+              <!--左边-->
+              <div id="zuo">
+
+                  <div id="postlist">
+                  </div>
+                  <div id="pinglunform">
+
+                  </div>
+              </div>
+
+
+        </div>
+             <!--/左边-->
+             <!--右边-->
+              <div id="you"  align="center">
+
+              </div>
+             <!--/右边-->
+             <div style="clear:both"></div>
+        </div>
+        <!--/正文 -->
+</div>
+</div>
+        </body>
+        </html>
+<script>
+
+											
+	///////////////////////////////////////////////////////////////////
+
+    //总应用的View
+    var appLeftView=Backbone.View.extend({
+        el:"#zuo",
+        initialize:function(){
+            //add post
+             this.plv=new postListView({
+                collection:new postModelcollection()
+            });
+
+            //add form
+            var plfv =new pingLunformView().render().el;
+        },
+        events:{
+            "click .wypl":"getHidId",                 // update:put   create:pot  model.destroy delete:delete  fetch:get 查询
+            "click #sb":"submit"
+        },
+        getHidId:function(e){
+           $("#_id").val($(e.target).parent().prev().val());
+        },
+        submit:function(){
+            var text=$("#text").val();
+            var _id=$ ("#_id").val();
+            this.plv.collection.get(_id).save({text:text}).done(function(){
+                $('#myModal').modal('hide')
+            });
+        }
+    });
+
+    var userModel=Backbone.Model.extend({
+
+    });
+
+    var appRightView=Backbone.View.extend({
+        el:"#you",
+        html:'',
+        initialize:function(){
+               this.html='<div id="pin"> </br>     '               +
+            '  <h3>您好欢迎您：<u><i><b><%= name%></b></i></u></h3> '          +
+            ' <button id="logout" class="btn btn-default">登出</button> '       +
+            '  <button id="newPost" class="btn btn-default">发帖</button> ';
+            $(this.el).html(this.html);
+            //钉珠
+            $("#pin").pin({
+                containerSelector: "#zuida"
+            })
+            return this;
+        },
+        events:{
+          "click #logout" :"logout"  ,
+          "click #newPost" :"newPost"
+        },
+        logout:function(){
+            $.ajax({
+                type: 'GET',
+                url: "/logout" ,
+                data: null ,
+                success: function(data){
+                    location.href='/index';
+                }
+            });
+
+        } ,
+        newPost:function(){
+            location.href="/new";
+        }
+    });
+
+
+
+    var  pingLunformView=Backbone.View.extend({
+        el:"#pinglunform",
+        render:function(){
+            var html='<div class="modal fade" id="myModal"  >  '    +
+            '<div class="modal-dialog">     '    +
+            '       <div class="modal-content">   '     +
+            '       <div class="modal-header">  '     +
+            '       <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">     '  +
+            '        &times;     '        +
+            '</button>   '            +
+            '<h4 class="modal-title" id="myModalLabel">   '     +
+            '        回复   '     +
+            '        </h4>     '      +
+            '        </div>    '       +
+            '        <form action="#" method="post">     '      +
+            '        <input type="hidden" name="hidid" id="_id" />    ' +
+            '        <textarea class="form-control" name="pinglun"   placeholder="请您把想说的写在这" id="text" cols="94" rows="20" name="text"></textarea>    '  +
+            '                          '    +
+            '        <div class="modal-footer">  '          +
+            '        <button type="button" class="btn btn-default"   '    +
+            'data-dismiss="modal">关闭 '      +
+            '       </button>   '               +
+            '       <button type="button" id="sb" name="sb" class="btn btn-primary">   '     +
+            '       提交   '  +
+            '       </button> '   +
+            '       </div> '   +
+            '       </form> '  +
+            '       </div>  ' +
+            '       </div>   '  +
+            '       </div>';
+            $(this.el).html(html);
+            return this;
+        }
+    });
+
+    //单条帖子的model
+    var postModel=Backbone.Model.extend({
+        urlRoot:"/updatePost",
+        idAttribute: "_id"
+    });
+
+    //帖子listModel
+    var postModelcollection=Backbone.Collection.extend({
+        model:postModel,
+        url:'/getPostList'
+    });
+
+    //post的view
+	var postListView =Backbone.View.extend({
+        el:'#postlist' ,
+        render:function(){
+        },
+        initialize:function(){
+            this.collection.fetch();
+            this.listenTo(this.collection,'add',this.addone);
+        },
+        addone:function(model,collection){
+            var html =new postView({
+                 model:model
+             }).render().el;
+            $(this.el).append(html);
+        }
+    });
+											
+	//postView的view
+    var postView=Backbone.View.extend({
+
+        tagName:'div',
+        className:'',
+        html:'',
+        render:function(){
+            $(this.el).empty();
+
+
+            this.html="<div class='post'>"+
+                    "&nbsp&nbsp&nbsp<font color='grey'> <b>title: </b></font>"+this.model.attributes.title+" </br> "+
+                    "&nbsp&nbsp&nbsp<font color='grey'> <b>say: </b></font>"+this.model.attributes.text+" </br> "+
+                    "&nbsp&nbsp&nbsp<font color='grey'> <b>name: </b></font>"+this.model.attributes.name+" </br>"+
+                    "&nbsp&nbsp&nbsp<font color='grey'> <b>time: </b></font>"+this.model.attributes.date+
+                  "</br>";
+            if(this.model.attributes.pinglun.length>=1){
+                this.html += '<div class="showpost ShowThisPost"  align="center"><font color="blue">↓显示全部评论</font></div>';
+            }
+
+
+            this.html+="<div style='display:none'>";
+
+            //添加评论
+            this.html+=new pinglunListView({
+               collection:this.model.attributes.pinglun
+            }).render();
+
+            this.html+="</div>";
+
+
+            this.html+="<div>"+
+                            '<input type="hidden" value='+this.model.attributes._id+' name="hidid" />' +
+                            '<div align="right">'  +
+                                '<button class="btn btn-primary btn-lg wypl" data-toggle="modal" data-target="#myModal">  '+
+                                '我要评论  ' +
+                                '</button>'+
+                            '</div> '+
+                       '</div>' +
+                    '<hr class="posthr"/>' ;
+//                    this.ready();
+            $(this.el).html(this.html) ;
+            return this;
+
+        },
+        events:{
+            "click .ShowThisPost":"ShowThisPost"
+        },
+        ShowThisPost:function(){
+
+            if (this.$('.ShowThisPost').next().is(":visible")) {
+                this.$('.ShowThisPost').text("↓显示全部评论");
+            }else {
+                this.$('ShowThisPost').text("↑收缩");
+            }
+
+            this.$('.ShowThisPost').next().toggle(600);
+        } ,
+        initialize:function(){
+            this.listenTo(this.model,'change',this.update);
+        },
+        update:function(){
+          this.render();
+        }
+    });
+
+
+    var pinglunListView=Backbone.View.extend({
+//        tag:'div',
+//        classname:'',
+        html:'',
+        render:function(){
+
+              for(var i=0;i<this.collection.length;i++){
+                  this.html+=new pinglunView({
+                      model:this.collection[i]
+                  }).render();
+              }
+              return this.html;
+        }
+    });
+
+    //单个评论
+    var pingluModel=Backbone.Model.extend({
+
+    });
+    //评论集合
+    var pinglunCollection=Backbone.Collection.extend({
+        model:pingluModel
+    });
+
+    var pinglunView=Backbone.View.extend({
+//        tagName:"div",
+//        className:'',
+        render:function(){
+            return  '<div class="pname">' +this.model.name+ '</div>' +
+                    '<div class="ptext">'+this.model.text+'</div> '+
+            '<div class="pday">' +this.model.day+ '</div> ';
+        }
+    });
+
+   var applv=new appLeftView();
+       new appRightView();
+
+    ///////////////////////////////////////////
+
+
+
+
+
+											
+</script>

@@ -1,0 +1,17 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>所有微博</title>
+    <!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+  </head>
+  <body>
+	<h1>shwoall</h1>
+  	<%= name %>
+	<form action="show" method="post">      
+             <input type="submit" value="登出" />
+        </form>
+	
+  </body>
+</html>
+

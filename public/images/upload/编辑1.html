@@ -1,0 +1,127 @@
+﻿<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!DOCTYPE html>
+<html>
+<head>
+    <title>所有微博</title>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link href="../public/stylesheets/show.css" rel="stylesheet" type="text/css" />
+    
+</head>
+<body>
+
+<div id="zuida"  align="center">
+    <div id="zhongjian" align="left">
+
+
+        <!--导航条-->
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">MYBLOG</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">所有微博</a></li>
+                    <li><a href="/new">写微博</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            用户 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">登出</a></li>
+                            <li><a href="#">注册</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--/导航条-->
+
+        <!--正文-->
+        <div  align="left">
+              <!--左边-->
+              <div style="float: left;width:75%">
+
+
+                  <% for(var i=0;i<aa.length;i++){ %>
+                      <div>
+                          &nbsp&nbsp&nbsp&nbsp&nbsp<font color="grey"><i><b>title:</b>&nbsp&nbsp</i></font><font color="black"><%=aa[i].title %></font> &nbsp&nbsp</br>
+                          &nbsp&nbsp&nbsp&nbsp&nbsp<font color="grey"><i><b>user:</b>&nbsp&nbsp</i></font><font color="black"><%=aa[i].name %></font> &nbsp&nbsp</br>
+                          &nbsp&nbsp&nbsp&nbsp&nbsp<font color="grey"><i><b>say:</b>&nbsp&nbsp</i></font><font color="black"><%=aa[i].text %></font>&nbsp&nbsp</br>
+                          &nbsp&nbsp&nbsp&nbsp&nbsp<font color="grey"><i><b>time:</b>&nbsp&nbsp</i></font><font color="black"><%=aa[i].date.toString() %></font>
+                          </br>
+
+                          <%for(var j=0;j<aa[i].pinglun.length;j++){%>
+
+                              <div align="left">
+                                   <%= aa[i].pinglun[j].name%> &nbsp </br>
+                                   <%= aa[i].pinglun[j].text%> &nbsp </br>
+                                   <%= aa[i].pinglun[j].day.toString() %> &nbsp </br></br></br></br>
+                              </div>
+                           <% } %>
+
+
+                           <input type="text" value="<%=aa[i]._id %>" name="hidid" hidden="hidden"/></br>
+
+                            <button class="btn btn-primary btn-lg"    data-toggle="modal" data-target="#myModal">
+                                我要评论
+                            </button>
+
+                      </div>
+
+                      <hr/>
+                  <%}%>
+
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            回复
+                        </h4>
+                    </div>
+
+                    <font   color="blue"><textarea  style="width: 100%">在这里写入回复</textarea></font>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            提交
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /模态框（Modal -->
+
+        </div>
+             <!--/左边-->
+             <!--右边-->
+              <div style="float: left;width:25%" >
+                  name<%= name%>
+                  <form action="show" method="post">
+                      <input type="submit" value="登出" />
+                  </form>
+                  <input type="button" onclick="fatie()" value="发帖" />
+              </div>
+             <!--/右边-->
+        </div>
+        <!--/正文 -->
+
+    </div>
+</div>
+        </body>
+        </html>
+<script>
+function fatie(){
+    location.href="new";
+}
+</script>

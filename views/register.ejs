@@ -1,0 +1,142 @@
+﻿<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!DOCTYPE html>
+<html>
+<head>
+    <title>register</title>
+    <script src="/javascripts/underscore-min.js"></script>
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+
+    <script src="/javascripts/backbone.js"></script>
+    <link rel="stylesheet" href="/stylesheets/register.css">
+    
+</head>
+<body>
+
+	<div id="div1" align="center">
+		<div id="div2" align="center">
+			<!--标题-->
+			<div id="title"></br></br></br></br></br></br></br></br>
+			  <h1>register</h1>
+			</div>
+			<!--/标题-->
+
+				<div >
+		         <input type="text" id="name" class="form-control input-lg"  name="name"  placeholder="Name">
+				</div>
+				
+				<div >
+		         <input type="password" id="password" class="form-control input-lg"  name="password"  placeholder="Password">
+				</div>
+				
+				
+				<div >
+						<button  type="submit" id="submit"  name="sb" class="btn btn-info btn-lg btn-block">Register</button>
+				</div>
+
+			
+			<div id="mess">
+                    <% if(error!=null){ %>
+
+                        <div id="error">
+                            <div id="myAlert" class="alert alert-warning">
+                               <a href="#" class="close" data-dismiss="alert">&times;</a>
+                               <strong>注册未成功！</strong><%= error %>。
+                            </div>
+                        </div>
+
+                    <% }
+                    if(success){
+                      %>
+                      <div id="error">
+                            <div id="myAlert" class="alert alert-success">
+                               <a href="#" class="close" data-dismiss="alert">&times;</a>
+                               <strong>恭喜！</strong><%= success %>。
+                          </div>
+                        </div>
+                    <% } %>
+			</div>
+			
+			
+			
+			<div id="login" align="right">
+				<h3><b>若您已有账号&nbsp</b><a href="/index"> ClickHere </a>	</h3>
+			</div>
+			
+		</div>	
+	</div>
+
+</body>
+</html>
+<script>
+
+
+    function zhuce(){
+        location.href="/register";
+    }
+
+    //定义用户模型
+    var userModel=Backbone.Model.extend({
+        urlRoot:"/register"
+    });
+
+
+
+
+
+
+    var badMessView=Backbone.View.extend({
+        el:"#mess",
+        render:function(mess){
+           var html='<div id="error"><div id="myAlert" class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>注册未成功！</strong>'+mess+'。</div></div>';
+            $(this.el).html(html);
+        } ,
+        template: _.template('')
+    });
+
+
+    var goodMessView=Backbone.View.extend({
+        el:"#mess",
+        render:function(mess){
+            var html='<div id="error"> <div id="myAlert" class="alert alert-success"> <a href="#" class="close" data-dismiss="alert">&times;</a> <strong>恭喜！</strong>'+mess+'</div></div>'  ;
+            $(this.el).html(html);
+        }
+    });
+
+
+    //定义消息视图
+    var userView=Backbone.View.extend({
+        el:"#div1",
+        events:{
+            'click #submit':'submit'
+        },
+        submit:function(){
+            var that = this;
+            this.model = new userModel({
+                name:$("#name").val(),
+                password:$("#password").val()
+            });
+            this.model.save().done(function(json){
+//                var data = $.parseJSON(json);
+                var data =json  ;
+
+                that.render(data.status,data.mess);
+            })
+
+        },
+        render:function(status,message){
+            if(status=='0') {
+                new badMessView().render(message);
+            }    else {
+                new goodMessView().render(message);
+            }
+        }
+    });
+
+    //实例化消息视图
+    new userView();
+
+
+
+</script>

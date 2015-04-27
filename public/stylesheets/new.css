@@ -1,0 +1,55 @@
+ 
+        #zuida{
+            width:100%;
+        }
+        #zhongjian{
+            width:1366px;
+						background:White;
+ 				 	  height:100%;
+        }
+        #zuo{
+        	float: left;
+        	width:75%;
+        	border: 1px solid black;
+        	
+        }
+        #you{
+      	  float: left;width:25%;
+      	  border: 1px solid black;
+      	  border-left:none;
+      	}
+      	.pname{
+      	  margin-left:80px;
+      	}
+      	.ptext{
+				  margin-left:150px;
+      	}
+      	.pday{
+					 	 margin-left:620px;
+      	} 
+      	.plhr{
+      	  width:90%;
+      	}  
+      	.wypl{
+      	  margin-right:57px;	
+      	}
+      	.posthr{ height:1px;border:none;border-top:1px solid #555555;}
+      	
+        .showpost:hover{ 
+        	cursor:pointer;  
+        }     
+ 
+        #name{
+          margin-left:300px;	
+        }
+        #zhengwen1{
+          	margin-left:300px;	
+          	margin-top:50px;
+        }
+        
+        #zhengwen{
+ 				 	
+ 				 	 
+ 				}
+ 				body {background-image:url('../images/bgshow.jpg'); background-size:100% 100%;  background-position: center; background-repeat:no-repeat ; background-attachment:fixed}
+ 				

@@ -1,0 +1,114 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+       <!DOCTYPE html>
+<html>
+<head>
+    <title>所有微博</title>
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <script src="/javascripts/underscore-min.js"></script>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/backbone.js"></script>
+    <link rel="stylesheet" href="/stylesheets/new.css">
+    
+</head>
+<body>
+
+<div id="zuida"  align="center">
+    <div id="zhongjian" align="left">
+
+
+        <!--导航条-->
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/show">MYBLOG</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li ><a href="/show">所有微博</a></li>
+                    <li class="active"><a href="/new">写微博</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            用户 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="dengchu">登出</a></li>
+                            <li><a href="/register">注册</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--/导航条-->
+
+        <!--正文-->
+        <div id="zhengwen"  align="center">
+              </br>
+           	  <div><b><h1>编写一个新的微博</h1></b> </div>
+	     			  <div id="name"  >
+      					    <div style="float:left" >标题&nbsp&nbsp&nbsp&nbsp</div> 
+      					    <div style="float:left;width:700px" >
+      					    	<input type="text" class="form-control" style="float:left" id="title" name="title"  placeholder="在这里写上标题">
+      					    </div>
+
+
+
+
+
+
+      					    <div style="clear:both"></div>
+              </div>
+              
+   						<div id="zhengwen1">  
+   								 <div style="float:left"  >正文&nbsp&nbsp&nbsp&nbsp</div> 
+   								 <div style="float:left" >
+						         <textarea class="form-control" id="text" placeholder="请您把想说的写在这" cols="94" rows="20" name="text"></textarea>
+						       </div>  
+						       <div style="clear:both"></div>
+						</div>  <br/><br/>
+						  
+					    <div align="center"> 
+					          <button id="sb" class="btn btn-default">go!</button>
+					    </div>			 	
+					    
+              
+
+        </div>
+        <!--/正文 -->
+
+
+    </div>
+</div>
+        </body>
+        </html>
+<script>
+      var newPost= Backbone.View.extend({
+           el: "#zhengwen",
+           submit:function(){
+                this.model.attributes.title=$("#title").val();
+                this.model.attributes.text=$("#text").val();
+               console.log(this.model);
+                this.model.save().done(function(json){
+                     location.href='/show';
+                });
+           },
+           initialize:function(){
+//               listenTo(this.model,'change',this.submit);
+          } ,
+          events:{
+               "click #sb":"submit"
+          }
+      });
+
+      var newPostView= Backbone.Model.extend({
+           urlRoot:"/newPost"
+      });
+
+
+      new newPost({
+        model:new newPostView()
+      });
+
+
+
+
+</script>

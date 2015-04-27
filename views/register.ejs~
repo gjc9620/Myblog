@@ -1,0 +1,32 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html>
+<html>
+<head>
+    <title>注册</title>
+</head>
+<body>
+              
+                    <h1>注册</h1>     <br/>
+
+                    <hr/>    <br/>
+               <form  action="/index"  method="post">
+                  账号<input type="text" name="name"/>  <br/>
+                  密码<input type="password" name="password"/><br/>
+<input type="submit" name="sb" value="注册"/>   <input type="button" onclick="denglu()" value="登陆"/>
+               </form>
+                   
+              <% if (success) { %>
+  <div><%= success %></div>
+<% } %>
+<% if (error) { %>
+  <div><%= error %> </div>
+<% } %>
+
+
+</body>
+</html>
+<script>
+	function denglu(){
+		location.href="index";
+	}
+</script>
