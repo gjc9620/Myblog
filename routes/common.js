@@ -14,6 +14,8 @@
 
 module.exports.checkLogin=function  (req, res, next) {
 
+
+        res.header("X-Frame-Options","SAMEORIGIN"); //禁止iframe套我页面
         if (req.session.user) {
         }else{
             return  res.render('index',{error:''});
